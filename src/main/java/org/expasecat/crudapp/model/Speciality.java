@@ -20,8 +20,4 @@ public class Speciality {
         this.status = status;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
 }

@@ -1,27 +1,26 @@
 package org.expasecat.crudapp.viewer;
 
-import org.expasecat.crudapp.controller.ConsoleInput;
 import org.expasecat.crudapp.controller.DeveloperController;
 
 public class DeveloperView {
     ConsoleInput consoleInput = new ConsoleInput();
     DeveloperController developerController = new DeveloperController();
     boolean isStart = true;
-    private String MENU = "Введите команду:\nc - для создания объекта\nr - для получения объекта по id\n" +
-            "u - для редактирования объекта\nd - для удаления объекта\nq - сохранить и выйти";
 
 
     public void start () {
         System.out.println("Программа запущена.");
         while(isStart) {
             System.out.println();
+            String MENU = "Введите команду:\nc - для создания объекта\nr - для получения объекта по id\n" +
+                    "u - для редактирования объекта\nd - для удаления объекта\nq - сохранить и выйти";
             System.out.println(MENU);
-            makechoise();
+            makeChoice();
         }
 
     }
 
-    public void makechoise() {
+    public void makeChoice() {
         String choice = consoleInput.getConsoleInputValue();
         switch (choice) {
             case "c":
@@ -62,25 +61,25 @@ public class DeveloperView {
             switch (consoleInput.getConsoleInputValue()) {
                 case "name":
                     System.out.print("Введите новое имя: ");
-                    developerController.editFirstName(id, consoleInput.getConsoleInputValue());
+                    developerController.editDeveloperFirstName(id, consoleInput.getConsoleInputValue());
                     System.out.println("Имя успешно изменено.");
                     System.out.println(developerController.getDeveloperById(id));
                     break;
                 case "lastname":
                     System.out.print("Введите новую фамилию: ");
-                    developerController.editLastName(id, consoleInput.getConsoleInputValue());
+                    developerController.editDeveloperLastName(id, consoleInput.getConsoleInputValue());
                     System.out.println("Фамилия успешно изменена.");
                     System.out.println(developerController.getDeveloperById(id));
 
                     break;
                 case "skill":
                     System.out.print("Введите навыки через пробел: ");
-                    developerController.setSkills(id, consoleInput.getConsoleInputValue());
+                    developerController.setDeveloperSkills(id, consoleInput.getConsoleInputValue());
                     System.out.println(developerController.getDeveloperById(id));
                     break;
                 case "speciality":
                     System.out.print("Введите специальность: ");
-                    developerController.editSpeciality(id, consoleInput.getConsoleInputValue());
+                    developerController.editDeveloperSpeciality(id, consoleInput.getConsoleInputValue());
                     System.out.println(developerController.getDeveloperById(id));
                     break;
                 case "back":

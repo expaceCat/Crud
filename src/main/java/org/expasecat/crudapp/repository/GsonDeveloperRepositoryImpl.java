@@ -10,32 +10,24 @@ import java.util.List;
 
 public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
     private final IOFile IOFILE = new IOFile();
-    private List<Developer> developers = getDeveloperListFromFile();
+    private final List<Developer> developers = getDeveloperListFromFile();
 
     private int getIdForList() {
-        if (developers != null) {
-            return developers.size() + 1;
-        } else {
-            return 0;
-        }
+        return developers.size() + 1;
     }
-//    {
-//        skills.add(new Skill("Java"));
-//        skills.add(new Skill("Spring"));
-//        developers.add(new Developer(++ID,"Иван", "Киселев",skills , new Speciality("Разработчик")));
-//        developers.add(new Developer(++ID,"Сергей", "Иванов", skills, new Speciality("Тестировщик")));
-//        developers.add(new Developer(++ID,"Аргут", "Вартанян", skills, new Speciality("Уборщик")));
-//    }
-
 
     private List<Developer> getDeveloperListFromFile() {
         return new ArrayList<>(IOFILE.deserialization());
     }
 
-
-
     public void saveToFile() {
         IOFILE.serialization(developers);
+    }
+
+    //возвращаем разработчика по id
+    @Override
+    public Developer read(Integer id) {
+        return developers.stream().filter(developer -> developer.getId() == id).findAny().orElse(null);
     }
 
     //создание пользователя
@@ -50,8 +42,6 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
         return new Developer(getIdForList(), firstName, lastName, listOfSkills, new Speciality(specialty));
     }
 
-
-    //перезапись записи.
     @Override
     public void update(Developer developer) {
         int position = 0;
@@ -62,12 +52,6 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
         }
         developers.remove(position);
         developers.add(position, developer);
-    }
-
-    //возвращаем разработчика по id
-    @Override
-    public Developer read(Integer id) {
-        return developers.stream().filter(developer -> developer.getId() == id).findAny().orElse(null);
     }
 
     //удаление (смена статуса на DELETE)
@@ -110,7 +94,7 @@ public class GsonDeveloperRepositoryImpl implements DeveloperRepository {
         }
         developer.setSkills(result);
         update(developer);
-        System.out.println("Skills успешно добавлены");
+        System.out.println("Навыки успешно добавлены.");
     }
 
     public void editSpeciality(int id, String speciality) {

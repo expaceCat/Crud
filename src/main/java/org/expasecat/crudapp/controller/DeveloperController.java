@@ -1,9 +1,7 @@
 package org.expasecat.crudapp.controller;
 
-import org.expasecat.crudapp.dao.DevelopersDao;
 import org.expasecat.crudapp.model.Developer;
 import org.expasecat.crudapp.repository.GsonDeveloperRepositoryImpl;
-import org.expasecat.crudapp.viewer.DeveloperView;
 
 public class DeveloperController {
     private final GsonDeveloperRepositoryImpl repository = new GsonDeveloperRepositoryImpl();
@@ -21,19 +19,19 @@ public class DeveloperController {
         return repository.developersSize();
     }
 
-    public void editFirstName(int id, String name) {
+    public void editDeveloperFirstName(int id, String name) {
         repository.editFirstName(id, name);
     }
 
-    public void editLastName(int id, String lastName) {
+    public void editDeveloperLastName(int id, String lastName) {
         repository.editLastName(id, lastName);
     }
 
-    public void setSkills (int id, String ... skill) {
+    public void setDeveloperSkills(int id, String ... skill) {
         repository.addSkills(id, skill);
     }
 
-    public void editSpeciality(int id, String speciality) {
+    public void editDeveloperSpeciality(int id, String speciality) {
         repository.editSpeciality(id, speciality);
     }
 

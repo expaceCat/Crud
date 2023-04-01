@@ -15,7 +15,6 @@ public class Skill {
         this.status = status;
     }
 
-
     public Skill(String skill) {
         this.skill = skill;
     }

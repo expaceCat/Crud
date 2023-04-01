@@ -1,4 +1,4 @@
-package org.expasecat.crudapp.controller;
+package org.expasecat.crudapp.viewer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,25 +8,23 @@ public class ConsoleInput {
 
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    //получаем id
-    public int getConsoleInputId(int countOfDevelopers) {
-        int id = 0;
+    // Метод для получения значения и фильтрации по id
+    public int getConsoleInputId(int maxId) {
+        int result = 0;
         boolean isValidId = false;
         while (!isValidId) {
             try {
-                id = Integer.parseInt(br.readLine());
-                if (id <= 0 || id > countOfDevelopers) {
+                result = Integer.parseInt(br.readLine());
+                if (result <= 0 || result > maxId) {
                     System.out.println("Неверно введен ID. Повторите ввод.");
                 } else {
                     isValidId = true;
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (NumberFormatException numbEx) {
                 System.out.println("Неверно введен ID. Повторите ввод.");
             }
         }
-        return id;
+        return result;
     }
 
     public String getConsoleInputValue() {
@@ -35,10 +33,10 @@ public class ConsoleInput {
             try  {
                 answer = br.readLine();
             } catch (IOException e) {
-                System.out.println("Что-то пошло не так");
+                System.out.println("Ошибка ввода.");
             }
             if (answer == null) {
-                throw new RuntimeException("Поле не может быть пустым.");
+                throw new NullPointerException("Поле не может быть пустым.");
             }
         }
         return answer;
