@@ -1,1 +1,1 @@
-[{"status":"ACTIVE","speciality":"Разработчик"},{"status":"ACTIVE","speciality":"Тестировщик"},{"status":"ACTIVE","speciality":"Уборщик"},{"status":"ACTIVE","speciality":"маркетолог"},{"status":"ACTIVE","speciality":"Разработчик"}]
+[{"id":1,"speciality":"Разработчик"},{"id":2,"speciality":"Тестировщик"},{"id":3,"speciality":"Уборщик"},{"id":4,"speciality":"Монтажер"},{"id":5,"speciality":"Менеджер продаж"},{"id":6,"speciality":"Vata"},{"id":7,"speciality":"Security"},{"id":8,"speciality":"Teremok"}]

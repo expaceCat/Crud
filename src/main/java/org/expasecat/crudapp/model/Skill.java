@@ -1,22 +1,35 @@
 package org.expasecat.crudapp.model;
 
 public class Skill {
-    private final String skill;
-    private Status status;
-    {
-        status = Status.ACTIVE;
+    private Integer id;
+    private String skill;
+
+    public Skill() {
     }
 
-    public String getSkill(){
+    public Skill(Integer id, String skill) {
+        this.id = id;
+        this.skill = skill;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getSkill() {
         return skill;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setSkill(String skill) {
+        this.skill = skill;
     }
 
-    public Skill(String skill) {
-        this.skill = skill;
+    public String toString() {
+        return "id: " + getId() + ". " + getSkill();
     }
 }
 

@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class ConsoleInput {
 
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     // Метод для получения значения и фильтрации по id
     public int getConsoleInputId(int maxId) {
@@ -14,13 +14,18 @@ public class ConsoleInput {
         boolean isValidId = false;
         while (!isValidId) {
             try {
-                result = Integer.parseInt(br.readLine());
+                String input = br.readLine();
+                if(!(input.matches("\\d+"))) {
+                    throw new NumberFormatException("Неверно введен ID. Повторите ввод цифрами.");
+                }
+                result = Integer.parseInt(input);
                 if (result <= 0 || result > maxId) {
                     System.out.println("Неверно введен ID. Повторите ввод.");
                 } else {
                     isValidId = true;
                 }
-            } catch (IOException e) {
+
+            }  catch(NumberFormatException | NullPointerException | IOException nex){
                 System.out.println("Неверно введен ID. Повторите ввод.");
             }
         }

@@ -1,109 +1,119 @@
 package org.expasecat.crudapp.viewer;
 
 import org.expasecat.crudapp.controller.DeveloperController;
+import org.expasecat.crudapp.model.Developer;
+import org.expasecat.crudapp.model.Skill;
+import org.expasecat.crudapp.model.Speciality;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class DeveloperView {
-    ConsoleInput consoleInput = new ConsoleInput();
-    DeveloperController developerController = new DeveloperController();
-    boolean isStart = true;
+    private final ConsoleInput CONSOLE_INPUT = new ConsoleInput();
+    private final SkillsView SKILLS_VIEW = new SkillsView();
+    private final SpecialityView SPECIALITY_VIEW = new SpecialityView();
+    private final DeveloperController CONTROLLER = new DeveloperController();
 
 
-    public void start () {
-        System.out.println("Программа запущена.");
-        while(isStart) {
-            System.out.println();
-            String MENU = "Введите команду:\nc - для создания объекта\nr - для получения объекта по id\n" +
-                    "u - для редактирования объекта\nd - для удаления объекта\nq - сохранить и выйти";
-            System.out.println(MENU);
-            makeChoice();
-        }
-
-    }
-
-    public void makeChoice() {
-        String choice = consoleInput.getConsoleInputValue();
-        switch (choice) {
-            case "c":
-                createNewDeveloper();
-                System.out.println("Developer успешно добавлен");
-                break;
-            case "r":
-                System.out.print("Введите id: ");
-                System.out.println(developerController.getDeveloperById((consoleInput.getConsoleInputId(developerController.developersCount()))));
-                break;
-            case "u":
-                editMenu();
-                break;
-            case "d":
-                System.out.print("Введите id который хотите удалить: ");
-                developerController.delete(consoleInput.getConsoleInputId(developerController.developersCount()));
-                System.out.println("Статус Developer изменен на DELETE");
-                break;
-            case "q":
-                developerController.saveToFile();
-                System.out.println("Файл успешно сохранен.");
-                isStart = false;
-                break;
-            default:
-                System.out.println("Неверная команда");
-        }
-    }
-
-
-
-    private void editMenu () {
-        System.out.println("Введите id объекта который надо отредактировать:");
-        int id = consoleInput.getConsoleInputId(developerController.developersCount());
-        System.out.println(developerController.getDeveloperById(id));
-
-        do {
-            System.out.println("\nВведите что вы хотите отредактировать: name | lastname | skill | speciality | back - для выхода в меню");
-            switch (consoleInput.getConsoleInputValue()) {
-                case "name":
-                    System.out.print("Введите новое имя: ");
-                    developerController.editDeveloperFirstName(id, consoleInput.getConsoleInputValue());
-                    System.out.println("Имя успешно изменено.");
-                    System.out.println(developerController.getDeveloperById(id));
-                    break;
-                case "lastname":
-                    System.out.print("Введите новую фамилию: ");
-                    developerController.editDeveloperLastName(id, consoleInput.getConsoleInputValue());
-                    System.out.println("Фамилия успешно изменена.");
-                    System.out.println(developerController.getDeveloperById(id));
-
-                    break;
-                case "skill":
-                    System.out.print("Введите навыки через пробел: ");
-                    developerController.setDeveloperSkills(id, consoleInput.getConsoleInputValue());
-                    System.out.println(developerController.getDeveloperById(id));
-                    break;
-                case "speciality":
-                    System.out.print("Введите специальность: ");
-                    developerController.editDeveloperSpeciality(id, consoleInput.getConsoleInputValue());
-                    System.out.println(developerController.getDeveloperById(id));
-                    break;
-                case "back":
-                    id = 0;
-                    break;
-            }
-        } while (!(id == 0));
-    }
-
-
-
-    public void createNewDeveloper () {
-        String firstName;
+    public void createDeveloper() {
+        Developer developer;
+        String name;
         String lastName;
-        String specialty;
-        String[] skills;
+        List<Skill> skills;
+        Speciality speciality;
         System.out.print("Введите имя: ");
-        firstName = consoleInput.getConsoleInputValue();
+        name = CONSOLE_INPUT.getConsoleInputValue();
         System.out.print("Введите фамилию: ");
-        lastName = consoleInput.getConsoleInputValue();
-        System.out.print("Введите специальность: ");
-        specialty = consoleInput.getConsoleInputValue();
-        System.out.print("Введите навыки через пробел: ");
-        skills = consoleInput.getConsoleInputValue().split(" ");
-        developerController.newDeveloper(firstName, lastName, specialty, skills);
+        lastName = CONSOLE_INPUT.getConsoleInputValue();
+        System.out.println("Выберите навыки из списка, введите ID через пробел: ");
+        System.out.println(SKILLS_VIEW.viewAllSkills());
+        skills = addSkills();
+        System.out.println(SPECIALITY_VIEW.getAllSpeciality());
+        System.out.println("Выберите навык из списка, введите его ID: ");
+        int idSpeciality = CONSOLE_INPUT.getConsoleInputId(SPECIALITY_VIEW.getMaxId());
+        speciality = SPECIALITY_VIEW.getSpecialityById(idSpeciality);
+        developer = CONTROLLER.createDeveloper(name, lastName, skills, speciality);
+        System.out.printf("Разработчик с ID: %d добавлен.\n", developer.getId());
+    }
+
+    public String viewDeveloperById(Integer id) {
+        return CONTROLLER.getDeveloperById(id).toString();
+    }
+
+    public Integer getMaxId() {
+        return CONTROLLER.getMaxId();
+    }
+
+    public void deleteDeveloper(Integer id) {
+        CONTROLLER.deleteDeveloper(id);
+    }
+
+    public void editDeveloper(Integer id) {
+        int choice;
+        System.out.println(CONTROLLER.getDeveloperById(id));
+        System.out.println("Введите что вы хотите редактировать:\n1 - ИМЯ,\n2 - ФАМИЛИЮ\n3 - НАВЫКИ\n4 - СПЕЦИАЛЬНОСТЬ");
+        choice = CONSOLE_INPUT.getConsoleInputId(4);
+        switch (choice) {
+            case 1:
+                System.out.print("Введите новое имя: ");
+                String name = CONSOLE_INPUT.getConsoleInputValue();
+                CONTROLLER.editName(id, name);
+                System.out.println("Имя успешно изменено");
+                break;
+            case 2:
+                System.out.print("Введите новую фамилию: ");
+                String lastName = CONSOLE_INPUT.getConsoleInputValue();
+                CONTROLLER.editLastName(id, lastName);
+                System.out.println("Фамилия успешно изменена");
+                break;
+            case 3:
+                System.out.println(SKILLS_VIEW.viewAllSkills());
+                System.out.println("Выберите навыки из списка, введите ID через пробел: ");
+                CONTROLLER.editDeveloperSkill(id, addSkills());
+                System.out.println("Навыки успешно отредактированы.");
+                break;
+            case 4:
+                Speciality speciality;
+                System.out.println(SPECIALITY_VIEW.getAllSpeciality());
+                System.out.println("Выберите навык из списка, введите его ID: ");
+                int idSpeciality = CONSOLE_INPUT.getConsoleInputId(SPECIALITY_VIEW.getMaxId());
+                speciality = SPECIALITY_VIEW.getSpecialityById(idSpeciality);
+                CONTROLLER.editDeveloperSpeciality(id, speciality);
+                System.out.println("Специальность успешно изменена.");
+                break;
+        }
+    }
+
+    private List<Skill> addSkills() {
+        List<Skill> skills = new ArrayList<>();
+        String[] ids;
+        while (true) {
+            try {
+                ids = CONSOLE_INPUT.getConsoleInputValue().split(" ");
+                if (ids.length > SKILLS_VIEW.getMaxId()) {
+                    throw new NumberFormatException("Превышено количество ID Skills");
+                }
+                Arrays.stream(ids).forEach((n) -> {
+                    if (!(n.matches("\\d+"))) {
+                        throw new NumberFormatException();
+                    }
+                    if(Integer.parseInt(n) > SKILLS_VIEW.getMaxId()) {
+                        throw new NumberFormatException();
+                    }
+                });
+                for (String strID : ids) {
+                    int id = Integer.parseInt(strID);
+                    skills.add(SKILLS_VIEW.getSkillsList().get(id-1));
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Неверно введен ID. Повторите ввод цифрами.");
+            }
+
+        }
+        return skills;
     }
 }
+

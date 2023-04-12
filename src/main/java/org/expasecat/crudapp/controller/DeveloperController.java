@@ -1,45 +1,60 @@
 package org.expasecat.crudapp.controller;
 
 import org.expasecat.crudapp.model.Developer;
-import org.expasecat.crudapp.repository.GsonDeveloperRepositoryImpl;
+import org.expasecat.crudapp.model.Skill;
+import org.expasecat.crudapp.model.Speciality;
+import org.expasecat.crudapp.repository.gson.GsonDeveloperRepositoryImpl;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 public class DeveloperController {
-    private final GsonDeveloperRepositoryImpl repository = new GsonDeveloperRepositoryImpl();
+    private final GsonDeveloperRepositoryImpl DEVELOPER_REPOSITORY = new GsonDeveloperRepositoryImpl();
 
-    public void newDeveloper (String firstName, String lastName, String specialty, String ... skills) {
-        Developer developer = repository.newDeveloper(firstName, lastName, specialty, skills);
-        repository.create(developer);
+    public List<Developer> getDevelopersList() {
+        return DEVELOPER_REPOSITORY.getAll();
     }
 
     public Developer getDeveloperById(Integer id) {
-        return repository.read(id);
+        return DEVELOPER_REPOSITORY.read(id);
     }
 
-    public int developersCount() {
-        return repository.developersSize();
+    public Developer createDeveloper(String name, String lastName, List<Skill> skills, Speciality speciality) {
+        return DEVELOPER_REPOSITORY.create(new Developer(null, name, lastName, skills, speciality));
     }
 
-    public void editDeveloperFirstName(int id, String name) {
-        repository.editFirstName(id, name);
+    public void deleteDeveloper(Integer id) {
+        DEVELOPER_REPOSITORY.delete(id);
     }
 
-    public void editDeveloperLastName(int id, String lastName) {
-        repository.editLastName(id, lastName);
+
+    public Integer getMaxId() {
+        Developer developer = getDevelopersList().stream().max(Comparator.comparing(Developer::getId)).orElse(null);
+        return Objects.nonNull(developer) ? developer.getId() : 1;
     }
 
-    public void setDeveloperSkills(int id, String ... skill) {
-        repository.addSkills(id, skill);
+    public void editName(Integer id, String name) {
+        Developer developer = getDeveloperById(id);
+        developer.setFirstName(name);
+        DEVELOPER_REPOSITORY.update(developer);
     }
 
-    public void editDeveloperSpeciality(int id, String speciality) {
-        repository.editSpeciality(id, speciality);
+    public void editLastName(Integer id, String lastName) {
+        Developer developer = getDeveloperById(id);
+        developer.setLastName(lastName);
+        DEVELOPER_REPOSITORY.update(developer);
     }
 
-    public void delete(int id) {
-        repository.delete(id);
+    public void editDeveloperSkill(Integer id, List<Skill> skills) {
+       Developer developer = DEVELOPER_REPOSITORY.read(id);
+       developer.setSkills(skills);
+       DEVELOPER_REPOSITORY.update(developer);
     }
 
-    public void saveToFile() {
-        repository.saveToFile();
+    public void editDeveloperSpeciality(Integer id, Speciality speciality) {
+        Developer developer = getDeveloperById(id);
+        developer.setSpeciality(speciality);
+        DEVELOPER_REPOSITORY.update(developer);
     }
 }

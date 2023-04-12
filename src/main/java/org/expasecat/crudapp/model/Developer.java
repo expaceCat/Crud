@@ -2,14 +2,17 @@ package org.expasecat.crudapp.model;
 import java.util.List;
 
 public class Developer {
-    private final int id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private List<Skill> skills;
     private Speciality speciality;
     private Status status = Status.ACTIVE;
 
-    public Developer(int id, String firstName, String lastName, List<Skill> skills, Speciality speciality) {
+    public Developer() {
+    }
+
+    public Developer(Integer id, String firstName, String lastName, List<Skill> skills, Speciality speciality) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -17,7 +20,11 @@ public class Developer {
         this.speciality = speciality;
     }
 
-    public int getId() {
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
         return id;
     }
 

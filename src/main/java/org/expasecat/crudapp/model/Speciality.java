@@ -1,11 +1,24 @@
 package org.expasecat.crudapp.model;
 
 public class Speciality {
-    private Status status;
+    private Integer id;
     private String speciality;
-    public Speciality(String speciality) {
-        status = Status.ACTIVE;
+
+
+    public Speciality() {
+    }
+
+    public Speciality(Integer id, String speciality) {
+        this.id = id;
         this.speciality = speciality;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getSpeciality() {
@@ -15,9 +28,4 @@ public class Speciality {
     public void setSpeciality(String speciality) {
         this.speciality = speciality;
     }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
 }
